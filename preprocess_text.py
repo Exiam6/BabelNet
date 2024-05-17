@@ -76,7 +76,7 @@ def get_embeddings(input_txt):
     torch.cuda.empty_cache()
     return(last_hidden_states)
 
-items.to_csv('/scratch/zz4330/ml-100k/Text/items.csv')
+items.to_csv('/scratch/zz4330/ml-100k/items.csv')
 items['Summary'] = items['Summary'].apply(clean_text)
 
 
