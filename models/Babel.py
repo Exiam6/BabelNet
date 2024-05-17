@@ -34,17 +34,6 @@ class BabelNet(nn.Module):
             ('relu2', nn.LeakyReLU()),
         ]))
         
-        self.encoder_video = nn.Sequential(OrderedDict([
-            ('linr1', nn.Linear(train_dataset.video_embedding_size, 1600)),
-            ('relu1', nn.LeakyReLU()),
-            ('linr2', nn.Linear(1600, 300)),
-            ('relu2', nn.LeakyReLU()),
-#             ('linr3', nn.Linear(1000, 500)),
-#             ('relu3', nn.LeakyReLU()),
-#             ('norm2', nn.BatchNorm1d(500)),
-#             ('linr4', nn.Linear(500, 300)),
-#             ('relu4', nn.LeakyReLU()),
-        ]))
         
         self.encoder_audio = nn.Sequential(OrderedDict([
             ('linr1', nn.Linear(train_dataset.audio_embedding_size, 600)),
@@ -109,7 +98,6 @@ class BabelNet(nn.Module):
         self.device = device
         self.encoder_user.apply(self.init_weights)
         self.encoder_item.apply(self.init_weights)
-        self.encoder_video.apply(self.init_weights)
         self.encoder_audio.apply(self.init_weights)
         self.encoder_text.apply(self.init_weights)
         self.encoder_meta.apply(self.init_weights)
@@ -170,7 +158,7 @@ class BabelNet(nn.Module):
         #print("ma: ",ma.shape)
         #print("itm: ",itm.shape)
         se = torch.mul(ma, mt)
-        outi = torch.cat((se, sm), axis = 2)#.reshape(-1, ROW * 1200)
+        outi = torch.cat((se, sm), axis = 2)#.reshape(-1, ROW * 1200) #Principal Attention
         #outi = sm
         #print("outi: ",outi.shape)
         outi = self.fusion(outi.unsqueeze(1))
